@@ -90,15 +90,7 @@ header{
 }
 
 .connect-wallet-button {
-  background-image: linear-gradient(
-    to right,
-    #ff8177 0%,
-    #ff867a 0%,
-    #ff8c7f 21%,
-    #f99185 52%,
-    #cf556c 78%,
-    #b12a5b 100%
-  );
+  background-image: linear-gradient(to right,rgb(238, 82, 82) 5%, 30%, rgb(55, 55, 247) 90%);
   background-size: 200% 200%;
   animation: gradient-animation 4s ease infinite;
 }
@@ -295,3 +287,4 @@ input:focus {
     background-position: 0% 50%;
   }
 }
+
