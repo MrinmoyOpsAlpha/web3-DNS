@@ -23,7 +23,7 @@ contract Domains is ERC721URIStorage {
   mapping(string => string) public records;
 		
  
-  constructor(string memory _tld) payable ERC721("Yolo Name Service", "YNS") {
+  constructor(string memory _tld) payable ERC721("Shino Name Service", "SNS") {
     tld = _tld;
     console.log("%s name service deployed", _tld);
   }	
@@ -86,9 +86,14 @@ contract Domains is ERC721URIStorage {
     _tokenIds.increment();
   }
 
- 
-  // This will give us the domain owners' address
   function getAddress(string calldata name) public view returns (address) {
       return domains[name];
+  }
+    function setRecord(string calldata name, string calldata record) public {
+      require(domains[name] == msg.sender);
+      records[name] = record;
+  }
+    function getRecord(string calldata name) public view returns(string memory) {
+      return records[name];
   }
 }
