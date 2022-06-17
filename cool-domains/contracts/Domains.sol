@@ -23,7 +23,8 @@ contract Domains is ERC721URIStorage {
   mapping(string => string) public records;
 		
  
-  constructor(string memory _tld) payable ERC721("Shino Name Service", "SNS") {
+  constructor(string memory _tld) ERC721("Shino Name Service", "SNS") payable {
+    owner = payable (msg.sender);
     tld = _tld;
     console.log("%s name service deployed", _tld);
   }	
@@ -96,4 +97,21 @@ contract Domains is ERC721URIStorage {
     function getRecord(string calldata name) public view returns(string memory) {
       return records[name];
   }
+
+  modifier onlyOwner() {
+    require(isOwner());
+    _;
+  }
+
+  function isOwner() public view returns (bool) {
+    return msg.sender == owner;
+  }
+
+  function withdraw() public onlyOwner {
+    uint amount = address(this).balance;
+    
+    (bool success, ) = msg.sender.call{value: amount}("");
+    require(success, "Failed to withdraw Matic");
+    require(success, "Failed to withdraw Matic");
+  } 
 }
