@@ -12,5 +12,5 @@ module.exports = {
       url: ALCHEMY_MUMBAI_URL,
       accounts: [WALLET_PRIVATE_KEY],
     }
-  }
+  },
 };

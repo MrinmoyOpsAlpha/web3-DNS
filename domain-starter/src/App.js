@@ -11,7 +11,7 @@ const TWITTER_HANDLE = "MrinmoyEth";
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 
 const tld = ".shinobi";
-const CONTRACT_ADDRESS = "0xa33487D4259a243CdC1015FFB3C44b1518feb01A";
+const CONTRACT_ADDRESS = " 0xB732CfA9c97187234294c9Ba1ED0E34F59305A86";
 
 const App = () => {
   const [network, setNetwork] = useState("");
