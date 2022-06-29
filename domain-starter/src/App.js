@@ -11,7 +11,7 @@ const TWITTER_HANDLE = "MrinmoyEth";
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 
 const tld = ".shinobi";
-const CONTRACT_ADDRESS = " 0xB732CfA9c97187234294c9Ba1ED0E34F59305A86";
+const CONTRACT_ADDRESS = "0xbEB2D1530817B7583C21c22442e9A57d8547D872";
 
 const App = () => {
   const [network, setNetwork] = useState("");
@@ -115,63 +115,54 @@ const App = () => {
 
   //minting the domain typed
   const mintDomain = async () => {
-    if (!domain) {
-      return;
-    }
-
+    // Don't run if the domain is empty
+    if (!domain) { return }
+    // Alert the user if the domain is too short
     if (domain.length < 3) {
-      alert("Domain must be at least 3 characters long");
+      alert('Domain must be at least 3 characters long');
       return;
     }
-
-    const price =
-      domain.length === 3 ? "0.5" : domain.length === 4 ? "0.3" : "0.1";
+    // Calculate price based on length of domain (change this to match your contract)	
+    // 3 chars = 0.5 MATIC, 4 chars = 0.3 MATIC, 5 or more = 0.1 MATIC
+    const price = domain.length === 3 ? '0.5' : domain.length === 4 ? '0.3' : '0.1';
     console.log("Minting domain", domain, "with price", price);
-
     try {
-      const { ethereum } = window;
-      if (ethereum) {
+        const { ethereum } = window;
+        if (ethereum) {
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
-        const contract = new ethers.Contract(
-          CONTRACT_ADDRESS,
-          contractABI.abi,
-          signer
-        );
-
-        console.log("Going to pop wallet now to pay gas...");
-
-        let tx = await contract.register(domain, {
-          value: ethers.utils.parseEther(price),
-        });
+        const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI.abi, signer);
+  
+        console.log("Going to pop wallet now to pay gas...")
+            let tx = await contract.register(domain, {value: ethers.utils.parseEther(price)});
+            // Wait for the transaction to be mined
         const receipt = await tx.wait();
-
+  
+        // Check if the transaction was successfully completed
         if (receipt.status === 1) {
-          console.log(
-            "Domain minted! https://mumbai.polygonscan.com/tx/" + tx.hash
-          );
-
-          // set record for the domain
+          console.log("Domain minted! https://mumbai.polygonscan.com/tx/"+tx.hash);
+          
+          // Set the record for the domain
           tx = await contract.setRecord(domain, record);
           await tx.wait();
-          console.log(
-            "Record set! https://mumbai.polygonscan.com/tx/" + tx.hash
-          );
-
+  
+          console.log("Record set! https://mumbai.polygonscan.com/tx/"+tx.hash);
+          
+          // Call fetchMints after 2 seconds
           setTimeout(() => {
             fetchMints();
           }, 2000);
-
-          setRecord("");
-          setDomain("");
+  
+          setRecord('');
+          setDomain('');
         } else {
           alert("Transaction failed! Please try again");
         }
+        }
+      } catch(error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  }
 
   const fetchMints = async () => {
     try {
